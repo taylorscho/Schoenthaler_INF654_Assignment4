@@ -1,0 +1,82 @@
+body {
+    background-color: lavender;
+}
+
+h1 {
+    text-align: center;
+    padding-top: 0px;
+}
+
+header {
+    text-align: center;
+    padding-bottom: 40px;
+
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    padding: 20px;
+    background: white;
+    font-size: 20px;
+    color: #555;
+    position: relative;
+    border-bottom: 1px solid #e6e6e6;
+    height: 46px;
+    padding-bottom: 20px;
+}
+
+li:nth-child(even) {
+    padding: 20px;
+}
+
+li span {
+    display: block;
+}
+
+li span:nth-child(2){
+    font-size: 16px;
+    margin-top: 6px;
+}
+
+li div {
+    position: absolute;
+    top: 0;
+    background: lightgrey;
+    width: 40px;
+    right: 0px;
+    text-align: center;
+    padding-top: 20;
+    padding: 0 0;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+form input {
+    float: left;
+    width: 38%;
+    margin: 0;
+    border: 0;
+    border-bottom: 1px solid #eee;
+    margin: 0 1%;
+    padding: 10px;
+    display: block;
+    box-sizing: border-box;
+    font-size: 18px;
+}
+
+button {
+    border: 0;
+    background: #fff;
+    border-radius: 10px;
+    padding: 13px;
+    width: 14%;
+    box-shadow: -1px 0px 1px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: black;
+    cursor: pointer;
+  }

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment 4</title>
+    <link rel="stylesheet" type = "text/css" href = "styles.css">
+</head>
+
+<body>
+    <h1>Book Stores in Kansas City</h1>
+    <header><img src = "Book-spines.jpg" alt = "book-spines" style = "width: 500px; height: 100px;"></header>
+    <div class = "content">
+        <form id = "add-bookstore-form">
+            <input type = "text" name = "name" placeholder = "Bookstore Name">
+            <input type = "text" name = "booktype" placeholder = "Booktype">
+            <button>Add Bookstore</button>
+        </form>
+        <ul id = "bookstore-list"></ul>
+    </div>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, addDoc, doc, deleteDoc, query, where, updateDoc } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyAPJQzbEZDVHh7dr5MlVpcGZ3AOO6vjRG8",
+          authDomain: "book-stores-953a3.firebaseapp.com",
+          projectId: "book-stores-953a3",
+          storageBucket: "book-stores-953a3.appspot.com",
+          messagingSenderId: "127307764749",
+          appId: "1:127307764749:web:607e2633f1724be3c2b144",
+          measurementId: "G-G41RJNCLZ1"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        async function getBookstores(db){
+            const bookstoreCol = collection(db, "bookstore");
+            const bookstoreSnapshot = await getDocs(bookstoreCol);
+            const bookstoreList = bookstoreSnapshot.docs.map((doc) => doc.data());
+            return bookstoreList;
+        }
+
+        const bookstoreList = document.querySelector('#bookstore-list');
+        const form = document.querySelector ('#add-bookstore-form');
+
+        function renderBookstore(dc){
+            let li = document.createElement("li");
+            let name = document.createElement("span");
+            let booktype = document.createElement("span");
+            let cross = document.createElement('div');
+        
+
+            li.setAttribute('data-id', dc.id);
+            name.textContent = dc.data().name;
+            booktype.textContent = dc.data().booktype;
+            cross.textContent = 'x';
+
+            li.appendChild(name);
+            li.appendChild(booktype);
+            li.appendChild(cross);
+
+            bookstoreList.appendChild(li);
+
+            cross.addEventListener('click', (e) => {
+                e.stopPropagation();
+                let id = e.target.parentElement.getAttribute('data-id');
+                deleteDoc(doc(db, "bookstore", id))
+            })
+        }
+
+        const bookstores = getDocs(collection(db, "bookstore")).then((snapshot) => {
+            snapshot.forEach((doc) => {
+                renderBookstore(doc)
+            })
+        })
+
+        const q = query(collection(db, "bookstore"), where("booktype", "==", "new"));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            console.log(doc.id, "=>", doc.data())
+        })
+
+        const upDoc = doc(db, "bookstore", "goe1oZOljg1qXvxFZPMG");
+
+        updateDoc(upDoc, {
+            name: "Rainy Day Books"
+        })
+
+        form.addEventListener(('submit'), (e) => {
+            e.preventDefault();
+            const docRef = addDoc(collection(db, "bookstore"), {
+                booktype: form.booktype.value, 
+                name: form.name.value
+            })
+        })
+      </script>
+    <script src = "app.js"></script>
+</body>
+</html>
